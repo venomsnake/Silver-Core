@@ -15793,7 +15793,6 @@ void hdd_component_psoc_disable(struct wlan_objmgr_psoc *psoc)
  *
  * Return: Errno
  */
-static int hdd_driver_load(void)
 QDF_STATUS hdd_component_pdev_open(struct wlan_objmgr_pdev *pdev)
 {
 	return ucfg_mlme_pdev_open(pdev);
