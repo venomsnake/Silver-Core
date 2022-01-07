@@ -485,11 +485,6 @@ static void tp_gesture_handle(struct touchpanel_data *ts)
             input_sync(ts->input_dev);
         }
     } else if (gesture_info_temp.gesture_type == FingerprintDown) {
-		key = KEY_FOD_DOWN;
-        input_report_key(ts->input_dev, key, 1);
-        input_sync(ts->input_dev);
-        input_report_key(ts->input_dev, key, 0);
-        input_sync(ts->input_dev);
         ts->fp_info.touch_state = 1;
         opticalfp_irq_handler(&ts->fp_info);
         notify_display_fpd(true);
@@ -4728,7 +4723,6 @@ static int init_input_device(struct touchpanel_data *ts)
 #ifdef CONFIG_OPPO_TP_APK
         set_bit(KEY_POWER, ts->input_dev->keybit);
 #endif //end of CONFIG_OPPO_TP_APK
-        set_bit(KEY_FOD_DOWN, ts->input_dev->keybit);
     }
 
     ts->kpd_input_dev->name = TPD_DEVICE"_kpd";
@@ -4836,7 +4830,7 @@ static void init_parse_dts(struct device *dev, struct touchpanel_data *ts)
     ts->spuri_fp_touch.lcd_trigger_fp_check = of_property_read_bool(np, "lcd_trigger_fp_check");
     ts->health_monitor_support = of_property_read_bool(np, "health_monitor_support");
     ts->lcd_trigger_load_tp_fw_support = of_property_read_bool(np, "lcd_trigger_load_tp_fw_support");
-    ts->fingerprint_underscreen_support = true;
+    ts->fingerprint_underscreen_support = of_property_read_bool(np, "fingerprint_underscreen_support");
     ts->suspend_gesture_cfg   = of_property_read_bool(np, "suspend_gesture_cfg");
     ts->auto_test_force_pass_support = of_property_read_bool(np, "auto_test_force_pass_support");
     ts->freq_hop_simulate_support = of_property_read_bool(np, "freq_hop_simulate_support");
