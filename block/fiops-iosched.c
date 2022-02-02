@@ -534,7 +534,7 @@ fiops_find_rq_fmerge(struct fiops_data *fiopsd, struct bio *bio)
 	return NULL;
 }
 
-static enum elv_merge fiops_merge(struct request_queue *q, struct request **req,
+static int fiops_merge(struct request_queue *q, struct request **req,
 		     struct bio *bio)
 {
 	struct fiops_data *fiopsd = q->elevator->elevator_data;
@@ -550,7 +550,7 @@ static enum elv_merge fiops_merge(struct request_queue *q, struct request **req,
 }
 
 static void fiops_merged_request(struct request_queue *q, struct request *req,
-			       enum elv_merge type)
+			       int type)
 {
 	if (type == ELEVATOR_FRONT_MERGE) {
 		struct fiops_ioc *ioc = RQ_CIC(req);
@@ -729,7 +729,7 @@ static struct elv_fs_entry fiops_attrs[] = {
 };
 
 static struct elevator_type iosched_fiops = {
-	.ops.sq = {
+	.ops = {
 		.elevator_merge_fn =		fiops_merge,
 		.elevator_merged_fn =		fiops_merged_request,
 		.elevator_merge_req_fn =	fiops_merged_requests,
